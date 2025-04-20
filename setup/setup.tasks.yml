@@ -1,0 +1,41 @@
+- name: Install Docker and Docker Compose
+  become: yes
+  apt:
+    name:
+      - docker.io
+      - docker-compose
+    state: present
+    update_cache: yes
+  tags:
+    - docker
+
+- name: Add user to Docker group
+  become: yes
+  user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: yes
+  tags:
+    - docker
+
+- name: Start Docker service
+  service:
+    name: docker
+    state: started
+    enabled: true
+  tags:
+    - docker
+
+- name: Create necessary directories
+  file:
+    path: "{{ root_dir }}/{{ item }}"
+    state: directory
+    mode: "0755"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  with_items:
+    - frontend
+    - network
+    - text-server
+  tags:
+    - directories

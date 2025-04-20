@@ -1,0 +1,12 @@
+- name: Copy docker-compose file
+  template:
+    src: "{{ docker_compose_file }}"
+    dest: "{{ root_dir }}/docker-compose.yml"
+    mode: "0644"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+
+- name: Start containers
+  shell:
+    cmd: docker-compose up -d
+    chdir: "{{ root_dir }}"

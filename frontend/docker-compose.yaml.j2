@@ -1,0 +1,32 @@
+version: '3'
+services:
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: chat-frontend
+    volumes:
+      - ./frontend:/app/backend/data
+    environment:
+      - ENV=prod
+      - WEBUI_NAME="{{ frontend_name }}"
+      - WEBUI_URL="{{ server_domain }}"
+      - WEBUI_SESSION_COOKIE_SAME_SITE=strict
+      - WEBUI_SESSION_COOKIE_SECURE=True
+      - WEBUI_AUTH_COOKIE_SAME_SITE=strict
+      - WEBUI_AUTH_COOKIE_SECURE=True
+      - ENABLE_RAG_WEB_SEARCH=True
+      - CORS_ALLOW_ORIGIN=https://{{ server_domain }}
+      - RAG_WEB_SEARCH_TRUST_ENV=True
+      - RAG_WEB_SEARCH_ENGINE=duckduckgo
+      - ENABLE_IMAGE_GENERATION=True
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.openwebui.rule=Host(`{{ server_domain }}`)"
+      - "traefik.http.routers.openwebui.entrypoints=websecure"
+      - "traefik.http.routers.openwebui.tls.certresolver=myresolver"
+      - "traefik.http.services.openwebui.loadbalancer.server.port=8080"
+    networks:
+      - {{ public_network }}
+
+networks:
+  {{ public_network }}:
+    external: true

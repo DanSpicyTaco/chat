@@ -1,0 +1,19 @@
+  traefik:
+    image: traefik:v3
+    container_name: traefik
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    labels:
+      - "--add-host host.docker.internal:host-gateway"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+      - {{ network_dir }}/traefik/letsencrypt:/letsencrypt
+      - {{ network_dir }}/traefik/traefik.yml:/etc/traefik/traefik.yml
+    networks:
+      - {{ public_network }}
+
+networks:
+  {{ public_network }}:
+    name: {{ public_network }}

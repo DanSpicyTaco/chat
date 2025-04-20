@@ -1,0 +1,8 @@
+# Docker/Directories
+public_network: reverse-proxy
+root_dir: "/home/{{ ansible_user }}/chat"
+network_dir: "{{ root_dir }}/network"
+frontend_dir: "{{ root_dir }}/frontend"
+
+# Misc
+admin_email: "admin@{{ server_domain }}"

@@ -1,0 +1,20 @@
+providers:
+  docker:
+    exposedByDefault: false
+    network: {{ public_network }}
+
+entryPoints:
+  web:
+    address: ":80"
+  websecure:
+    address: ":443"
+
+certificatesresolvers:
+  myresolver:
+    acme:
+      tlschallenge: true
+      email: "{{ admin_email }}"
+      storage: /letsencrypt/acme.json
+
+log:
+  level: WARN

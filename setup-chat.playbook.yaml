@@ -1,0 +1,23 @@
+---
+- name: Setup OpenWeb UI with Docker on Linux
+  hosts: chat
+  vars:
+    docker_compose_file: "./config/docker-compose.yaml.j2"
+  vars_files:
+    - vars.yml
+
+  tasks:
+    - name: Setup Docker and create required directories
+      import_tasks: ./setup/setup.tasks.yml
+      tags:
+        - setup
+
+    - name: Setup traefik
+      import_tasks: ./network/network.tasks.yml
+      tags:
+        - network
+
+    - name: Setup OpenWeb UI
+      import_tasks: ./frontend/frontend.tasks.yml
+      tags:
+        - frontend
