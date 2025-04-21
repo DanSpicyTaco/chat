@@ -4,7 +4,8 @@ services:
     image: ghcr.io/open-webui/open-webui:main
     container_name: chat-frontend
     volumes:
-      - ./frontend:/app/backend/data
+      - {{ frontend_dir }}/data:/app/backend/data
+      - {{ frontend_dir }}/static:/app/static
     environment:
       - ENV=prod
       - WEBUI_NAME="{{ frontend_name }}"

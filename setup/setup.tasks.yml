@@ -35,6 +35,8 @@
     group: "{{ ansible_user }}"
   with_items:
     - frontend
+    - frontend/data
+    - frontend/static
     - network
     - text-server
   tags:
